@@ -12,27 +12,21 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
     {
 
         AppDbContext _context;
+        LeilaoDao _leilaoDao;
 
         public LeilaoController()
         {
             _context = new AppDbContext();
+            _leilaoDao = new LeilaoDao();
         }
         private IEnumerable<Categoria> BuscarCategorias()
         {
             return _context.Categorias.ToList();
         }
-        private IEnumerable<Leilao> BuscarLeiloes()
-        {
-            return _context.Leiloes.Include(l=> l.Categoria).ToList();
-        }
-        private Leilao BuscarLeilaoPorId(int id)
-        {
-            return _context.Leiloes.First(l => l.Id == id);
-        }
-
+      
         public IActionResult Index()
         {
-            var leiloes = BuscarLeiloes();
+            var leiloes = _leilaoDao.BuscarLeiloes();
             return View(leiloes);
         } 
 
@@ -49,8 +43,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Leiloes.Add(model);
-                _context.SaveChanges();
+                _leilaoDao.IncluirLeilao(model);
                 return RedirectToAction("Index");
             }
             ViewData["Categorias"] = BuscarCategorias();
@@ -63,7 +56,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         {
             ViewData["Categorias"] = BuscarCategorias();
             ViewData["Operacao"] = "Edição";
-            var leilao = BuscarLeilaoPorId(id);
+            var leilao = _leilaoDao.BuscarLeilaoPorId(id);
             if (leilao == null) return NotFound();
             return View("Form", leilao);
         }
@@ -73,8 +66,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Leiloes.Update(model);
-                _context.SaveChanges();
+                _leilaoDao.AlterarLeilao(model);
                 return RedirectToAction("Index");
             }
             ViewData["Categorias"] = BuscarCategorias();
@@ -85,37 +77,34 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         [HttpPost]
         public IActionResult Inicia(int id)
         {
-            var leilao = BuscarLeilaoPorId(id);
+            var leilao = _leilaoDao.BuscarLeilaoPorId(id);
             if (leilao == null) return NotFound();
             if (leilao.Situacao != SituacaoLeilao.Rascunho) return StatusCode(405);
             leilao.Situacao = SituacaoLeilao.Pregao;
             leilao.Inicio = DateTime.Now;
-            _context.Leiloes.Update(leilao);
-            _context.SaveChanges();
+            _leilaoDao.AlterarLeilao(leilao);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public IActionResult Finaliza(int id)
         {
-            var leilao = BuscarLeilaoPorId(id);
+            var leilao = _leilaoDao.BuscarLeilaoPorId(id);
             if (leilao == null) return NotFound();
             if (leilao.Situacao != SituacaoLeilao.Pregao) return StatusCode(405);
             leilao.Situacao = SituacaoLeilao.Finalizado;
             leilao.Termino = DateTime.Now;
-            _context.Leiloes.Update(leilao);
-            _context.SaveChanges();
+            _leilaoDao.AlterarLeilao(leilao);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public IActionResult Remove(int id)
         {
-            var leilao = BuscarLeilaoPorId(id);
+            var leilao = _leilaoDao.BuscarLeilaoPorId(id);
             if (leilao == null) return NotFound();
             if (leilao.Situacao == SituacaoLeilao.Pregao) return StatusCode(405);
-            _context.Leiloes.Remove(leilao);
-            _context.SaveChanges();
+            _leilaoDao.ExcluirLeilao(leilao);
             return NoContent();
         }
 
@@ -123,7 +112,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         public IActionResult Pesquisa(string termo)
         {
             ViewData["termo"] = termo;
-            var leiloes = BuscarLeiloes();
+            var leiloes = _leilaoDao.BuscarLeiloes();
             leiloes = leiloes.Where(l => string.IsNullOrWhiteSpace(termo) || 
                     l.Titulo.ToUpper().Contains(termo.ToUpper()) || 
                     l.Descricao.ToUpper().Contains(termo.ToUpper()) ||

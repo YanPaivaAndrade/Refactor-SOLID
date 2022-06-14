@@ -13,16 +13,15 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
 
         AppDbContext _context;
         LeilaoDao _leilaoDao;
+        CategoriaDao _categoriaDao;
 
         public LeilaoController()
         {
             _context = new AppDbContext();
             _leilaoDao = new LeilaoDao();
+            _categoriaDao = new CategoriaDao();
         }
-        private IEnumerable<Categoria> BuscarCategorias()
-        {
-            return _context.Categorias.ToList();
-        }
+        
       
         public IActionResult Index()
         {
@@ -33,7 +32,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         [HttpGet]
         public IActionResult Insert()
         {
-            ViewData["Categorias"] = BuscarCategorias();
+            ViewData["Categorias"] = _categoriaDao.BuscarCategorias();
             ViewData["Operacao"] = "Inclusão";
             return View("Form");
         }
@@ -46,7 +45,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
                 _leilaoDao.IncluirLeilao(model);
                 return RedirectToAction("Index");
             }
-            ViewData["Categorias"] = BuscarCategorias();
+            ViewData["Categorias"] = _categoriaDao.BuscarCategorias();
             ViewData["Operacao"] = "Inclusão";
             return View("Form", model);
         }
@@ -54,7 +53,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            ViewData["Categorias"] = BuscarCategorias();
+            ViewData["Categorias"] = _categoriaDao.BuscarCategorias();
             ViewData["Operacao"] = "Edição";
             var leilao = _leilaoDao.BuscarLeilaoPorId(id);
             if (leilao == null) return NotFound();
@@ -69,7 +68,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
                 _leilaoDao.AlterarLeilao(model);
                 return RedirectToAction("Index");
             }
-            ViewData["Categorias"] = BuscarCategorias();
+            ViewData["Categorias"] = _categoriaDao.BuscarCategorias();
             ViewData["Operacao"] = "Edição";
             return View("Form", model);
         }

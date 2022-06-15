@@ -15,25 +15,25 @@ namespace Alura.LeilaoOnline.WebApp.Dados.DaosImp
             _context = new AppDbContext();
         }
 
-        public IEnumerable<Leilao> BuscarLeiloes()
+        public IEnumerable<Leilao> BuscarTodos()
         {
             return _context.Leiloes.Include(l => l.Categoria).ToList();
         }
-        public Leilao BuscarLeilaoPorId(int id)
+        public Leilao BuscarPorId(int id)
         {
             return _context.Leiloes.First(l => l.Id == id);
         }
-        public void IncluirLeilao(Leilao leilao)
+        public void Incluir(Leilao leilao)
         {
             _context.Leiloes.Add(leilao);
             _context.SaveChanges();
         }
-        public void AlterarLeilao(Leilao leilao)
+        public void Alterar(Leilao leilao)
         {
             _context.Update(leilao);
             _context.SaveChanges();
         }
-        public void ExcluirLeilao(Leilao leilao)
+        public void Excluir(Leilao leilao)
         {
             _context.Remove(leilao);
             _context.SaveChanges();

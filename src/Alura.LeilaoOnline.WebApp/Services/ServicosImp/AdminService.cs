@@ -19,64 +19,64 @@ namespace Alura.LeilaoOnline.WebApp.Services.ServicosImp
 
         public void CadastraLeilao(Leilao leilao)
         {
-            _leilaoDao.IncluirLeilao(leilao);
+            _leilaoDao.Incluir(leilao);
         }
 
         public IEnumerable<Categoria> ConsultaCategorias()
         {
-            return _categoriaDao.BuscarCategoriasEIncluirLeiloes();
+            return _categoriaDao.BuscarTodos();
         }
 
         public Leilao ConsultaLeilaoPorId(int id)
         {
-            return _leilaoDao.BuscarLeilaoPorId(id);
+            return _leilaoDao.BuscarPorId(id);
         }
 
         public IEnumerable<Leilao> ConsultaLeiloes()
         {
-            return _leilaoDao.BuscarLeiloes();
+            return _leilaoDao.BuscarTodos();
         }
 
         public void FinalizaLeilaoDePregaoComId(int id)
         {
-            var leilao = _leilaoDao.BuscarLeilaoPorId(id);
+            var leilao = _leilaoDao.BuscarPorId(id);
             if(leilao != null && leilao.Situacao == SituacaoLeilao.Pregao)
             {
                 leilao.Situacao = SituacaoLeilao.Finalizado;
                 leilao.Termino = DateTime.Now;
-                _leilaoDao.AlterarLeilao(leilao);
+                _leilaoDao.Alterar(leilao);
             }
         }
 
         public void IniciaPregaoDeLeilaoComId(int id)
         {
-            var leilao = _leilaoDao.BuscarLeilaoPorId(id);
+            var leilao = _leilaoDao.BuscarPorId(id);
             if (leilao != null && leilao.Situacao == SituacaoLeilao.Rascunho)
             {
                 leilao.Situacao = SituacaoLeilao.Pregao;
                 leilao.Inicio = DateTime.Now;
-                _leilaoDao.AlterarLeilao(leilao);
+                _leilaoDao.Alterar(leilao);
             }
         }
 
         public void ModificaLeilao(Leilao leilaoEditado)
         {
-            _leilaoDao.AlterarLeilao(leilaoEditado);
+            _leilaoDao.Alterar(leilaoEditado);
         }
 
         public void RemoveLeilao(int idLeilao)
         {
-            var leilao = _leilaoDao.BuscarLeilaoPorId(idLeilao);
+            var leilao = _leilaoDao.BuscarPorId(idLeilao);
             if (leilao == null || leilao.Situacao == SituacaoLeilao.Pregao)
             {
                 return;
             }
-            _leilaoDao.ExcluirLeilao(leilao);
+            _leilaoDao.Excluir(leilao);
         }
         public IEnumerable<Leilao> PesquisaLeilaoEmPregaoPorTermo(string termo)
         {
             var termoNormalized = termo.ToUpper();
-            var leiloes = _leilaoDao.BuscarLeiloes();
+            var leiloes = _leilaoDao.BuscarTodos();
             leiloes = leiloes.Where(l => string.IsNullOrWhiteSpace(termo) ||
                     l.Titulo.ToUpper().Contains(termoNormalized) ||
                     l.Descricao.ToUpper().Contains(termoNormalized) ||

@@ -1,12 +1,14 @@
-﻿using Alura.LeilaoOnline.WebApp.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Alura.LeilaoOnline.WebApp.Dados.Daos
 {
-    public interface ICategoriaDao : ILeituraDao<Categoria>
+    public interface ILeituraDao<T>
     {
+        IEnumerable<T> BuscarTodos();
+        T BuscarPorId(int id);        
+
     }
 }

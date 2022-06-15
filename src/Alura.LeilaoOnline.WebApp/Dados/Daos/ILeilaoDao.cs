@@ -6,14 +6,7 @@ using System.Threading.Tasks;
 
 namespace Alura.LeilaoOnline.WebApp.Dados.Daos
 {
-    public interface ILeilaoDao
+    public interface ILeilaoDao : ILeituraDao<Leilao>, IEscritaDao<Leilao>
     {
-        IEnumerable<Leilao> BuscarLeiloes();
-        Leilao BuscarLeilaoPorId(int id);
-        void IncluirLeilao(Leilao leilao);
-        void AlterarLeilao(Leilao leilao);
-        void ExcluirLeilao(Leilao leilao);
-
-
     }
 }

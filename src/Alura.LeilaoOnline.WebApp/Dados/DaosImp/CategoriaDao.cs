@@ -17,14 +17,16 @@ namespace Alura.LeilaoOnline.WebApp.Dados.DaosImp
             _context = new AppDbContext();
         }
 
-        public Categoria BuscarCategoriaPorId(int id)
+
+        public Categoria BuscarPorId(int id)
         {
             return _context.Categorias.FirstOrDefault(c => c.Id == id);
         }
 
-        public IEnumerable<Categoria> BuscarCategoriasEIncluirLeiloes()
+        public IEnumerable<Categoria> BuscarTodos()
         {
             return _context.Categorias.Include(c => c.Leiloes).ToList();
         }
+
     }
 }

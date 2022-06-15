@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Alura.LeilaoOnline.WebApp.Models;
 using System;
 using Alura.LeilaoOnline.WebApp.Dados.Daos;
-using Alura.LeilaoOnline.WebApp.Dados.DaosImp;
 
 namespace Alura.LeilaoOnline.WebApp.Controllers
 {
@@ -13,10 +12,10 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         ILeilaoDao _leilaoDao;
         ICategoriaDao _categoriaDao;
 
-        public LeilaoController()
+        public LeilaoController(ILeilaoDao leilaoDao, ICategoriaDao categoriaDao)
         {
-            _leilaoDao = new LeilaoDao();
-            _categoriaDao = new CategoriaDao();
+            _leilaoDao = leilaoDao;
+            _categoriaDao = categoriaDao;
         }
         
       

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Alura.LeilaoOnline.WebApp.Models;
 using Alura.LeilaoOnline.WebApp.Dados.Daos;
-using Alura.LeilaoOnline.WebApp.Dados.DaosImp;
 
 namespace Alura.LeilaoOnline.WebApp.Controllers
 {
@@ -11,9 +10,9 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
     {
         ILeilaoDao _leilaoDao;
 
-        public LeilaoApiController()
+        public LeilaoApiController(ILeilaoDao leilaoDao)
         {
-            _leilaoDao = new LeilaoDao();
+            _leilaoDao = leilaoDao;
         }       
 
         [HttpGet]

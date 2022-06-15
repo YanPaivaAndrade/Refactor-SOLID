@@ -1,5 +1,6 @@
 ﻿using Alura.LeilaoOnline.WebApp.Dados.Daos;
 using Alura.LeilaoOnline.WebApp.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,15 @@ namespace Alura.LeilaoOnline.WebApp.Dados.DaosImp
         {
             _context = new AppDbContext();
         }
-        public IEnumerable<Categoria> BuscarCategorias()
+
+        public Categoria BuscarCategoriaPorId(int id)
         {
-            return _context.Categorias.ToList();
+            return _context.Categorias.FirstOrDefault(c => c.Id == id);
+        }
+
+        public IEnumerable<Categoria> BuscarCategoriasEIncluirLeiloes()
+        {
+            return _context.Categorias.Include(c => c.Leiloes).ToList();
         }
     }
 }

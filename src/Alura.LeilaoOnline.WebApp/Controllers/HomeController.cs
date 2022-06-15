@@ -4,31 +4,21 @@ using Microsoft.EntityFrameworkCore;
 using Alura.LeilaoOnline.WebApp.Dados;
 using Alura.LeilaoOnline.WebApp.Models;
 using Microsoft.AspNetCore.Routing;
+using Alura.LeilaoOnline.WebApp.Services.Servicos;
 
 namespace Alura.LeilaoOnline.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        AppDbContext _context;
-
-        public HomeController()
+        IProdutoService _produtoService;
+        public HomeController(IProdutoService produtoService)
         {
-            _context = new AppDbContext();
+            _produtoService = produtoService;
         }
 
         public IActionResult Index()
         {
-            var categorias = _context.Categorias
-                .Include(c => c.Leiloes)
-                .Select(c => new CategoriaComInfoLeilao
-                {
-                    Id = c.Id,
-                    Descricao = c.Descricao,
-                    Imagem = c.Imagem,
-                    EmRascunho = c.Leiloes.Where(l => l.Situacao == SituacaoLeilao.Rascunho).Count(),
-                    EmPregao = c.Leiloes.Where(l => l.Situacao == SituacaoLeilao.Pregao).Count(),
-                    Finalizados = c.Leiloes.Where(l => l.Situacao == SituacaoLeilao.Finalizado).Count(),
-                });
+            var categorias = _produtoService.ConsultaCategoriasComTotalDeLeiloes();
             return View(categorias);
         }
 
@@ -42,9 +32,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         [Route("[controller]/Categoria/{categoria}")]
         public IActionResult Categoria(int categoria)
         {
-            var categ = _context.Categorias
-                .Include(c => c.Leiloes)
-                .First(c => c.Id == categoria);
+            var categ = _produtoService.ConsultaCategoriaPorId(categoria);
             return View(categ);
         }
 
@@ -53,12 +41,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         public IActionResult Busca(string termo)
         {
             ViewData["termo"] = termo;
-            var termoNormalized = termo.ToUpper();
-            var leiloes = _context.Leiloes
-                .Where(c =>
-                    c.Titulo.ToUpper().Contains(termoNormalized) ||
-                    c.Descricao.ToUpper().Contains(termoNormalized) ||
-                    c.Categoria.Descricao.ToUpper().Contains(termoNormalized));
+            var leiloes = _produtoService.PesquisaLeilaoEmPregaoPorTermo(termo);
             return View(leiloes);
         }
     }

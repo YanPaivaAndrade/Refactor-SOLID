@@ -1,5 +1,7 @@
 using Alura.LeilaoOnline.WebApp.Dados.Daos;
 using Alura.LeilaoOnline.WebApp.Dados.DaosImp;
+using Alura.LeilaoOnline.WebApp.Services.Servicos;
+using Alura.LeilaoOnline.WebApp.Services.ServicosImp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +13,8 @@ namespace Alura.LeilaoOnline.WebApp
         {
             services.AddTransient<ILeilaoDao, LeilaoDao>();
             services.AddTransient<ICategoriaDao, CategoriaDao>();
+            services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<IProdutoService, ProdutoService>();
             services
                 .AddControllersWithViews()
                 .AddNewtonsoftJson(options => 

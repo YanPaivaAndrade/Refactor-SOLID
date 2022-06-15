@@ -1,12 +1,13 @@
-﻿using Alura.LeilaoOnline.WebApp.Models;
+﻿using Alura.LeilaoOnline.WebApp.Dados.Daos;
+using Alura.LeilaoOnline.WebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Alura.LeilaoOnline.WebApp.Dados
+namespace Alura.LeilaoOnline.WebApp.Dados.DaosImp
 {
-    public class CategoriaDao
+    public class CategoriaDao : ICategoriaDao
     {
         AppDbContext _context;
 

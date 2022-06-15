@@ -1,11 +1,12 @@
-﻿using Alura.LeilaoOnline.WebApp.Models;
+﻿using Alura.LeilaoOnline.WebApp.Dados.Daos;
+using Alura.LeilaoOnline.WebApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Alura.LeilaoOnline.WebApp.Dados
+namespace Alura.LeilaoOnline.WebApp.Dados.DaosImp
 {
-    public class LeilaoDao
+    public class LeilaoDao : ILeilaoDao
     {
         AppDbContext _context;
 

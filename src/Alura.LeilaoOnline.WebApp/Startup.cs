@@ -13,8 +13,9 @@ namespace Alura.LeilaoOnline.WebApp
         {
             services.AddTransient<ILeilaoDao, LeilaoDao>();
             services.AddTransient<ICategoriaDao, CategoriaDao>();
-            services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<IAdminService, AdminExclusaoLogicaService>();
             services.AddTransient<IProdutoService, ProdutoService>();
+            services.AddDbContext<AppDbContext>();
             services
                 .AddControllersWithViews()
                 .AddNewtonsoftJson(options => 

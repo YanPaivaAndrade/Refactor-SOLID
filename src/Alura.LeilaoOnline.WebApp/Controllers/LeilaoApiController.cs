@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Alura.LeilaoOnline.WebApp.Models;
-using Alura.LeilaoOnline.WebApp.Dados.Daos;
 using Alura.LeilaoOnline.WebApp.Services.Servicos;
 
 namespace Alura.LeilaoOnline.WebApp.Controllers
@@ -10,7 +9,6 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
     public class LeilaoApiController : ControllerBase
     {
         IAdminService _adminService;
-        ILeilaoDao _leilaoDao;
 
         public LeilaoApiController(IAdminService adminService)
         {

@@ -3,6 +3,7 @@ using Alura.LeilaoOnline.WebApp.Models;
 using Alura.LeilaoOnline.WebApp.Services.Servicos;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Alura.LeilaoOnline.WebApp.Services.ServicosImp
 {
